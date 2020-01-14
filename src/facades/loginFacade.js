@@ -30,6 +30,7 @@ function loginFacade() {
   };
 
   const isAdmin = () => {
+    if (!loggedIn()) return false;
     const decoder = tokenDecoder();
     return decoder.roles.includes("admin");
   };
@@ -53,7 +54,7 @@ function loginFacade() {
       username: user,
       password: pass
     });
-    return fetch(URL + "/api/login", options)
+    return fetch(URL + "/login", options)
       .then(handleHttpErrors)
       .then(res => {
         setToken(res.token);

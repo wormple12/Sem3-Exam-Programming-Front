@@ -1,29 +1,31 @@
 import React from "react";
 
 const RecipeInfo = ({ match, recipes, recipeDetails, setRecipeDetails }) => {
-  let result;
   const recipe = recipes.find(x => {
     return x.id == match.params.id;
   });
-  if (recipeDetails !== "" && recipeDetails === recipe) {
-    result = recipeDetails;
+  if (recipeDetails === recipe) {
+    // all is good, carry on
   } else {
     if (recipe === undefined) {
-      result = ""; //<Redirect to="/browse" />;
+      return ""; //<Redirect to="/browse" />;
     } else {
       setRecipeDetails(recipe);
-      result = recipeDetails;
     }
   }
+  if (recipeDetails === "") return "";
   return (
     <div>
       <hr />
-      <h4>{result.title}</h4>
-      <b>Preparation Time:</b> {result.preparationTime}
-      <br />
-      <b>Ingredients:</b>
+      <h4>{recipeDetails.title}</h4>
+      <p>
+        <b>Preparation Time:</b> {recipeDetails.preparationTime} minutes
+      </p>
+      <p>
+        <b>Ingredients:</b>
+      </p>
       <ul className="list-group">
-        {result.ingredientList.map(i => {
+        {recipeDetails.ingredientList.map(i => {
           return (
             <li key={i.id} className="list-group-item">
               {i.item.name}, {i.amount} grams
@@ -31,7 +33,8 @@ const RecipeInfo = ({ match, recipes, recipeDetails, setRecipeDetails }) => {
           );
         })}
       </ul>
-      <b>Directions:</b> {result.directions}
+      <br />
+      <p>{recipeDetails.directions}</p>
     </div>
   );
 };

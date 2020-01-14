@@ -56,7 +56,7 @@ const RecipeList = ({
 }) => {
   const addToPlan = (evt, recipe) => {
     evt.preventDefault();
-    if (currentChoice.length <= 7) {
+    if (currentChoice.length < 7) {
       setCurrentChoice([...currentChoice, recipe]);
     } else {
       alert("There's only seven days in a week!");

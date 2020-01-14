@@ -1,7 +1,6 @@
 import loginFacade from "./facades/loginFacade";
 import uuid from "uuid/v1";
 import React from "react";
-import LZString from "lz-string";
 
 export function catchHttpErrors(err) {
   if (err.status) {
@@ -40,28 +39,6 @@ export const makeOptions = (method, addToken, body) => {
   }
   return opts;
 };
-
-export function setCookie(name, value, exdays) {
-  localStorage.setItem(name, JSON.stringify(value));
-}
-
-export function getCookie(name) {
-  const result = JSON.parse(localStorage.getItem(name));
-  return result;
-}
-
-export function generateListFromObject(obj) {
-  // not taking lists into account yet
-  let pairs = [];
-  for (const [key, value] of Object.entries(obj)) {
-    pairs.push(
-      <li key={key} className="list-group-item">
-        <b>{key}:</b> {value}
-      </li>
-    );
-  }
-  return <ul className="list-group">{pairs}</ul>;
-}
 
 const tableTime = (function() {
   function embeddedTableCreation(info) {

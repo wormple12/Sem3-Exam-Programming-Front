@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { catchHttpErrors } from "./utils";
-import LogIn from "./editorRecipes/users/LogIn";
-import Header from "./editorRecipes/Header";
-import CreateRecipePage from "./editorRecipes/recipes/CreateRecipePage";
-import Main from "./editorRecipes/Main";
+import LogIn from "./components/users/LogIn";
+import Header from "./components/Header";
+import CreateRecipePage from "./components/recipes/CreateRecipePage";
+import Main from "./components/Main";
 
 function App({ loginFacade, recipeFacade }) {
   const [loggedIn, setLoggedIn] = useState(loginFacade.loggedIn());
@@ -25,11 +25,13 @@ function App({ loginFacade, recipeFacade }) {
   const [currentChoice, setCurrentChoice] = useState([]);
 
   useEffect(() => {
-    setRecipes([]);
-    setRecipeDetails("");
-    setEditorRecipe({}); // reset all input fields
-    updateRecipeList();
-  }, []);
+    if (loggedIn) {
+      setRecipes([]);
+      setRecipeDetails("");
+      setEditorRecipe({}); // reset all input fields
+      updateRecipeList();
+    }
+  }, [loggedIn]);
 
   function updateRecipeList() {
     recipeFacade
@@ -55,13 +57,19 @@ function App({ loginFacade, recipeFacade }) {
     return <h3>The page was not found.</h3>;
   };
 
+  const Welcome = () => {
+    return (
+      <h3>Welcome to the Restaurant Planner. Please log in to continue.</h3>
+    );
+  };
+
   return (
     <Router>
       <Header loginFacade={loginFacade} loggedIn={loggedIn} />
       <div className="mainContainer">
         <Switch>
           <Route exact path="/">
-            <Redirect to="/browse" />
+            <Welcome />
           </Route>
           <Route path="/browse">
             <Main

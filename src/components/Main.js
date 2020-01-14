@@ -1,9 +1,6 @@
 import React from "react";
 import RecipeOverview from "./recipes/RecipeOverview";
-import HardwareCategories from "./recipes/HardwareCategories";
-import PrebuiltPCList from "./PrebuiltPCList";
 import WeekMenuPlan from "./recipes/WeekMenuPlan";
-import Svgs from "./recipes/Svgs";
 
 const Home = props => {
   const {
@@ -73,7 +70,7 @@ function getUserInfo(loginFacade, loggedIn) {
     userInfo = (
       <div>
         <h5>
-          You are logged in as {decoder.sub}, role: ({decoder.roles})
+          You are logged in as "{decoder.sub}", role: ({decoder.roles})
         </h5>
         <hr />
       </div>

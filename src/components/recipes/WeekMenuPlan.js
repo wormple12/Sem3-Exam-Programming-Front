@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import { catchHttpErrors } from "../../utils";
 
 const WeekMenuPlan = props => {
@@ -9,11 +10,23 @@ const WeekMenuPlan = props => {
     /* setAllPlans */
   } = props;
 
+  const match = useRouteMatch();
+
   // make it possible to display undefined menu plans:
-  let plan = [...currentChoice];
-  for (let i = 0; i < plan.length; i++) {
-    if (plan[i] === undefined) {
-      plan[i] = { title: "" };
+  let [plan, setPlan] = useState();
+  makeCurrentChoiceDisplayable();
+  /* let plan = [...currentChoice]; */
+  useEffect(() => {
+    makeCurrentChoiceDisplayable();
+    setPlan(plan);
+  }, [currentChoice]);
+
+  function makeCurrentChoiceDisplayable() {
+    plan = [...currentChoice];
+    for (let i = 0; i < 7; i++) {
+      if (plan[i] === undefined) {
+        plan[i] = { title: "" };
+      }
     }
   }
 
@@ -39,32 +52,33 @@ const WeekMenuPlan = props => {
     );
   };
 
+  console.log(JSON.stringify(plan));
   return (
     <div>
       <h3>This Week's Menu Plan</h3>
       {/* DISPLAY CURRENT WEEK AND YEAR */}
-      <br />
-      <ul className="list-group com ConstructionList">
+      <p>You still need {7 - currentChoice.length} recipes.</p>
+      <ul className="list-group comConstructionList">
         <li key="monday" className="list-group-item">
-          <b>Monday:</b> <RecipeLink recipe={plan[0]} />
+          <b>Monday:</b> <RecipeLink match={match} recipe={plan[0]} />
         </li>
         <li key="tuesday" className="list-group-item">
-          <b>Tuesday:</b> <RecipeLink recipe={plan[1]} />
+          <b>Tuesday:</b> <RecipeLink match={match} recipe={plan[1]} />
         </li>
         <li key="wednesday" className="list-group-item">
-          <b>Wednesday:</b> <RecipeLink recipe={plan[2]} />
+          <b>Wednesday:</b> <RecipeLink match={match} recipe={plan[2]} />
         </li>
         <li key="thursday" className="list-group-item">
-          <b>Thursday:</b> <RecipeLink recipe={plan[3]} />
+          <b>Thursday:</b> <RecipeLink match={match} recipe={plan[3]} />
         </li>
         <li key="friday" className="list-group-item">
-          <b>Friday:</b> <RecipeLink recipe={plan[4]} />
+          <b>Friday:</b> <RecipeLink match={match} recipe={plan[4]} />
         </li>
         <li key="saturday" className="list-group-item">
-          <b>Saturday:</b> <RecipeLink recipe={plan[5]} />
+          <b>Saturday:</b> <RecipeLink match={match} recipe={plan[5]} />
         </li>
         <li key="sunday" className="list-group-item">
-          <b>Sunday:</b> <RecipeLink recipe={plan[6]} />
+          <b>Sunday:</b> <RecipeLink match={match} recipe={plan[6]} />
         </li>
       </ul>
       <br />
@@ -80,13 +94,16 @@ const WeekMenuPlan = props => {
   );
 };
 
-const RecipeLink = ({ recipe }) => {
-  return (
-    <li>
-      <Link to={`${match.url}/${recipe.id}`} style={{ textDecoration: "none" }}>
-        {recipe.title}
-      </Link>
-    </li>
+const RecipeLink = ({ match, recipe }) => {
+  return recipe.id !== undefined ? (
+    <Link
+      to={`${match.url}/${recipe.id}`}
+      style={{ color: "black", textDecoration: "none" }}
+    >
+      {recipe.title}
+    </Link>
+  ) : (
+    ""
   );
 };
 

@@ -1,8 +1,7 @@
 // for development:
-//const URL = "http://localhost:8080/Sem3-Exam-Programming-Back/api/recipe";
+//const URL = "http://localhost:8080/Sem3-Exam-Programming-Back/api";
 // actual deployed backend:
-const URL =
-  "https://www.helvedesmaskine.dk/Sem3-Exam-Programming-Back/api/recipe";
+const URL = "https://www.helvedesmaskine.dk/Sem3-Exam-Programming-Back/api";
 
 const configuration = (function() {
   return {

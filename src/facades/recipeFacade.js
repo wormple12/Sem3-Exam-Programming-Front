@@ -1,7 +1,7 @@
 import { handleHttpErrors, makeOptions } from "../utils";
 import configuration from "../settings";
 
-const URL = configuration.URL;
+const URL = configuration.URL + "/recipe";
 
 const recipeFacade = (function() {
   const emptyRecipe = {
@@ -39,7 +39,7 @@ const recipeFacade = (function() {
   } */
 
   function savePlan(plan) {
-    options = makeOptions("POST", true, recipe);
+    const options = makeOptions("POST", true, plan);
     const result = fetch(URL + "/plans/", options).then(handleHttpErrors);
     return result;
   }

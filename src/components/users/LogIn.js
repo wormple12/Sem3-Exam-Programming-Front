@@ -13,7 +13,9 @@ const LogIn = ({ apiFacade, loggedIn, setLoggedIn }) => {
   };
 
   return (
-    <div>{!loggedIn ? <LogInForm login={login} /> : <Redirect to="/" />}</div>
+    <div>
+      {!loggedIn ? <LogInForm login={login} /> : <Redirect to="/browse" />}
+    </div>
   );
 };
 
