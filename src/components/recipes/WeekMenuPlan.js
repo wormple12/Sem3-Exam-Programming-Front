@@ -13,20 +13,10 @@ const WeekMenuPlan = props => {
   const match = useRouteMatch();
 
   // make it possible to display undefined menu plans:
-  let [plan, setPlan] = useState();
-  makeCurrentChoiceDisplayable();
-  /* let plan = [...currentChoice]; */
-  useEffect(() => {
-    makeCurrentChoiceDisplayable();
-    setPlan(plan);
-  }, [currentChoice]);
-
-  function makeCurrentChoiceDisplayable() {
-    plan = [...currentChoice];
-    for (let i = 0; i < 7; i++) {
-      if (plan[i] === undefined) {
-        plan[i] = { title: "" };
-      }
+  let plan = [...currentChoice];
+  for (let i = 0; i < 7; i++) {
+    if (plan[i] === undefined) {
+      plan[i] = { title: "" };
     }
   }
 
@@ -52,7 +42,6 @@ const WeekMenuPlan = props => {
     );
   };
 
-  console.log(JSON.stringify(plan));
   return (
     <div>
       <h3>This Week's Menu Plan</h3>

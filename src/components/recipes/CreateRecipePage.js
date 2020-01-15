@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Prompt, Redirect } from "react-router-dom";
 import { catchHttpErrors } from "../../utils";
 
@@ -6,17 +6,19 @@ const CreateRecipePage = ({
   recipeFacade,
   editorRecipe,
   setEditorRecipe,
-  updateRecipeList
+  updateRecipeList,
+  ingredients
 }) => {
-  let [isBlocking, setIsBlocking] = useState(false);
   if (editorRecipe === undefined) return <Redirect to="/browse" />;
+  if (editorRecipe.ingredientList === undefined) {
+    editorRecipe = { ...editorRecipe, ingredientList: [] };
+  }
 
-  const handleChange = event => {
+  const handleInputChange = event => {
     const target = event.target;
     const value = target.value;
     const name = target.id;
     setEditorRecipe({ ...editorRecipe, [name]: value });
-    setIsBlocking(true);
   };
 
   function handleSubmit(event) {
@@ -30,7 +32,6 @@ const CreateRecipePage = ({
       .catch(catchHttpErrors);
     setEditorRecipe({});
     event.target.reset();
-    setIsBlocking(false);
   }
 
   return (
@@ -38,16 +39,14 @@ const CreateRecipePage = ({
       <h2>Add/Edit Recipe</h2>
       <form
         className="form-horizontal"
-        onChange={handleChange}
+        onChange={handleInputChange}
         onSubmit={handleSubmit}
       >
-        <Prompt
-          when={isBlocking}
-          message={location =>
-            `Are you sure you want to go to ${location.pathname}`
-          }
+        <InputFields
+          editorRecipe={editorRecipe}
+          setEditorRecipe={setEditorRecipe}
+          ingredients={ingredients}
         />
-        <InputFields editorRecipe={editorRecipe} />
         <div className="form-group">
           <div className="col-sm-offset-3 col-sm-9">
             <button type="submit" className="btn btn-primary">
@@ -60,16 +59,18 @@ const CreateRecipePage = ({
   );
 };
 
-const InputFields = ({ editorRecipe }) => {
+const InputFields = ({ editorRecipe, setEditorRecipe, ingredients }) => {
   return (
     <div>
       <div className="form-group">
         <div className="col-sm-9">
           <input
             className="form-control"
+            type="text"
             id="title"
             placeholder="Enter Title"
             defaultValue={editorRecipe.title}
+            required
           />
         </div>
       </div>
@@ -77,23 +78,70 @@ const InputFields = ({ editorRecipe }) => {
         <div className="col-sm-9">
           <input
             className="form-control"
+            type="number"
             id="preparationTime"
-            placeholder="Enter preparation time"
+            placeholder="Enter preparation time (minutes)"
             defaultValue={editorRecipe.preparationTime}
+            required
           />
         </div>
       </div>
       <div className="form-group">
         <div className="col-sm-9">
-          <input
+          <textarea
             className="form-control"
             id="directions"
+            rows="5"
             placeholder="Enter directions"
             defaultValue={editorRecipe.directions}
           />
         </div>
       </div>
-      {/* dropdown menus with all items + input fields with amount */}
+      <div className="form-group">
+        <div className="col-sm-9">
+          <h5>Ingredients:</h5>
+          {editorRecipe.ingredientList.map(i => {
+            return (
+              <p>
+                {i.item.name}, {i.amount} grams
+              </p>
+            );
+          })}
+          <select className="form-control" id="ingrDropdown">
+            {ingredients.map(i => {
+              return <option>{i.name}</option>;
+            })}
+          </select>
+          <input
+            className="form-control"
+            type="number"
+            id="ingrAmount"
+            placeholder="Enter amount (grams)"
+            defaultValue={0}
+          />
+          <button
+            onClick={e => {
+              e.preventDefault();
+              var dropdown = document.getElementById("ingrDropdown");
+              var selection = dropdown.options[dropdown.selectedIndex].text;
+              setEditorRecipe({
+                ...editorRecipe,
+                ingredientList: [
+                  ...editorRecipe.ingredientList,
+                  {
+                    item: ingredients.find(i => {
+                      return i.name === selection;
+                    }),
+                    amount: document.getElementById("ingrAmount").value
+                  }
+                ]
+              });
+            }}
+          >
+            Add Ingredient
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

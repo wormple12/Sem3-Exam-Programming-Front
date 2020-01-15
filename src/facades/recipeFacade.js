@@ -4,11 +4,11 @@ import configuration from "../settings";
 const URL = configuration.URL + "/recipe";
 
 const recipeFacade = (function() {
-  const emptyRecipe = {
+  /* const emptyRecipe = {
     title: "",
     preparationTime: 0,
     directions: ""
-  };
+  }; */
 
   function fetchAllRecipes() {
     const options = makeOptions("GET", true);
@@ -31,6 +31,12 @@ const recipeFacade = (function() {
     return fetch(URL + "/" + id, options).then(handleHttpErrors);
   }
 
+  function fetchAllIngredientItems() {
+    const options = makeOptions("GET", true);
+    const result = fetch(URL + "/items/", options).then(handleHttpErrors);
+    return result;
+  }
+
   /* function fetchAllPlans() {
     const result = fetch(URL + "/plans/", options).then(
       handleHttpErrors
@@ -48,6 +54,7 @@ const recipeFacade = (function() {
     fetchAllRecipes: fetchAllRecipes,
     addEditRecipe: addEditRecipe,
     deleteRecipe: deleteRecipe,
+    fetchAllIngredientItems: fetchAllIngredientItems,
     savePlan: savePlan
   };
 })();

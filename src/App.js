@@ -17,12 +17,15 @@ function App({ loginFacade, recipeFacade }) {
   // recipe browsing hooks:
   const [recipes, setRecipes] = useState([]);
   const [recipeDetails, setRecipeDetails] = useState("");
+  const [filterName, setFilterName] = useState("");
   // recipe creation hook:
   let [editorRecipe, setEditorRecipe] = useState({});
-  // plan calendar hooks:
+  // plan calendar hook:
   const [allPlans, setAllPlans] = useState([]);
-  // menu plan hooks:
+  // menu plan hook:
   const [currentChoice, setCurrentChoice] = useState([]);
+  // ingredient hook:
+  let [ingredients, setIngredients] = useState([]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -31,14 +34,27 @@ function App({ loginFacade, recipeFacade }) {
       setEditorRecipe({}); // reset all input fields
       updateRecipeList();
     }
-  }, [loggedIn]);
+  }, [loggedIn, filterName]);
 
   function updateRecipeList() {
     recipeFacade
       .fetchAllRecipes()
-      .then(recipes => setRecipes(recipes))
+      .then(recipes => {
+        recipes = recipes.filter(r =>
+          r.title.toUpperCase().includes(filterName.toUpperCase())
+        );
+        setRecipes(recipes);
+      })
       .catch(catchHttpErrors);
   }
+
+  useEffect(() => {
+    if (loggedIn)
+      recipeFacade
+        .fetchAllIngredientItems()
+        .then(items => setIngredients(items))
+        .catch(catchHttpErrors);
+  }, [loggedIn]);
 
   /* useEffect(() => {
     recipeFacade
@@ -83,6 +99,9 @@ function App({ loginFacade, recipeFacade }) {
               currentChoice={currentChoice}
               setCurrentChoice={setCurrentChoice}
               updateRecipeList={updateRecipeList}
+              ingredients={ingredients}
+              filterName={filterName}
+              setFilterName={setFilterName}
               /* allPlans={allPlans}
               setAllPlans={setAllPlans} */
             />
@@ -93,6 +112,7 @@ function App({ loginFacade, recipeFacade }) {
               editorRecipe={editorRecipe}
               setEditorRecipe={setEditorRecipe}
               updateRecipeList={updateRecipeList}
+              ingredients={ingredients}
             />
           </Route>
           <Route path="/login">

@@ -13,7 +13,10 @@ const Home = props => {
     setEditorRecipe,
     currentChoice,
     setCurrentChoice,
-    updateRecipeList
+    updateRecipeList,
+    ingredients,
+    filterName,
+    setFilterName
     /* allPlans,
     setAllPlans */
   } = props;
@@ -37,6 +40,9 @@ const Home = props => {
             currentChoice={currentChoice}
             setCurrentChoice={setCurrentChoice}
             updateRecipeList={updateRecipeList}
+            ingredients={ingredients}
+            filterName={filterName}
+            setFilterName={setFilterName}
           />
         </div>
         <div className="col-sm-3 col-md-5 col-lg-4">
