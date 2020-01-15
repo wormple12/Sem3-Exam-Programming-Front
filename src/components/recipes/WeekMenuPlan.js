@@ -3,12 +3,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { catchHttpErrors } from "../../utils";
 
 const WeekMenuPlan = props => {
-  const {
-    recipeFacade,
-    currentChoice,
-    setCurrentChoice
-    /* setAllPlans */
-  } = props;
+  const { recipeFacade, currentChoice, setCurrentChoice } = props;
 
   const match = useRouteMatch();
 
@@ -27,12 +22,7 @@ const WeekMenuPlan = props => {
           onClick={() => {
             recipeFacade
               .savePlan(currentChoice)
-              .then(() => {
-                /* recipeFacade
-                  .fetchAllPlans()
-                  .then(plans => setAllPlans(plans))
-                  .catch(catchHttpErrors); */
-              })
+              .then(() => {})
               .catch(catchHttpErrors);
           }}
         >

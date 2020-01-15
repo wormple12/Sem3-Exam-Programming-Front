@@ -17,8 +17,6 @@ const Home = props => {
     ingredients,
     filterName,
     setFilterName
-    /* allPlans,
-    setAllPlans */
   } = props;
 
   const userInfo = getUserInfo(loginFacade, loggedIn);
@@ -51,17 +49,7 @@ const Home = props => {
               recipeFacade={recipeFacade}
               currentChoice={currentChoice}
               setCurrentChoice={setCurrentChoice}
-              /* setAllPlans={setAllPlans} */
             />
-            {/* <hr />
-            <PrebuiltPCList
-              allPlans={allPlans}
-              setAllPlans={setAllPlans}
-              setHardwareType={setHardwareType}
-              setCurrentChoice={setCurrentChoice}
-              loggedIn={loggedIn}
-              recipeFacade={recipeFacade}
-            /> */}
           </div>
         </div>
       </div>

@@ -4,12 +4,6 @@ import configuration from "../settings";
 const URL = configuration.URL + "/recipe";
 
 const recipeFacade = (function() {
-  /* const emptyRecipe = {
-    title: "",
-    preparationTime: 0,
-    directions: ""
-  }; */
-
   function fetchAllRecipes() {
     const options = makeOptions("GET", true);
     const result = fetch(URL + "/all/", options).then(handleHttpErrors);
@@ -45,7 +39,8 @@ const recipeFacade = (function() {
   } */
 
   function savePlan(plan) {
-    const options = makeOptions("POST", true, plan);
+    const fullPlan = { weekNo: 3, yearNo: 2020, recipeList: plan };
+    const options = makeOptions("POST", true, fullPlan);
     const result = fetch(URL + "/plans/", options).then(handleHttpErrors);
     return result;
   }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Prompt, Redirect } from "react-router-dom";
+import React from "react";
+import { Redirect } from "react-router-dom";
 import { catchHttpErrors } from "../../utils";
 
 const CreateRecipePage = ({

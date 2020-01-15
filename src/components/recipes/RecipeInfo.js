@@ -8,7 +8,7 @@ const RecipeInfo = ({ match, recipes, recipeDetails, setRecipeDetails }) => {
     // all is good, carry on
   } else {
     if (recipe === undefined) {
-      return ""; //<Redirect to="/browse" />;
+      return "";
     } else {
       setRecipeDetails(recipe);
     }
